@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_2/bloc/profile/profile_bloc.dart';
 import 'package:test_2/bloc/user/user_bloc.dart';
 import 'package:test_2/view/components/my_button.dart';
+import 'package:test_2/view/components/navbar_item.dart';
 
 class HomeView extends StatefulWidget {
 
@@ -49,6 +51,37 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).colorScheme.primary,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            NavbarItem(icon: CupertinoIcons.home, label: 'Inicio'),
+            NavbarItem(icon: CupertinoIcons.search, label: 'Buscar'),
+            const SizedBox(width: 20),
+            NavbarItem(icon: CupertinoIcons.conversation_bubble, label: 'Mensajes'),
+            NavbarItem(icon: CupertinoIcons.profile_circled, label: 'Perfil'),
+          ],
+        ),
+      ),
+      floatingActionButton: ClipOval(
+        child: Material(
+          color: Color(0xFF7861FF),
+          elevation: 10,
+          child: InkWell(
+            child: SizedBox(
+              width: 56,
+              height: 56,
+              child: Icon(
+                CupertinoIcons.mic_fill,
+                size: 28,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(25.0),
