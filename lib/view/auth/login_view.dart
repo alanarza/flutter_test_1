@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_2/bloc/user/user_bloc.dart';
-import 'package:test_2/main.dart';
 import 'package:test_2/view/components/my_button.dart';
 import 'package:test_2/view/components/my_textfield.dart';
-import 'package:test_2/view/home/home_view.dart';
 
 class LoginView extends StatefulWidget {
 
@@ -108,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
                         style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {context.go('/register');},
                         child: const Text(
                           " Registrarse",
                           style: TextStyle(

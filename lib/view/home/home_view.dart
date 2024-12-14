@@ -1,11 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_2/bloc/profile/profile_bloc.dart';
 import 'package:test_2/bloc/user/user_bloc.dart';
 import 'package:test_2/view/components/my_button.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomeView extends StatefulWidget {
+
+  const HomeView({
+    super.key
+  });
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+
+    //show loading circle
+    /*showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator()
+      ),
+    );*/
+
+    try {
+      var _profileBloc = BlocProvider.of<ProfileBloc>(context);
+      _profileBloc.add(SaveProfileData());
+      //if (context.mounted) Navigator.pop(context);
+    } catch (error) {
+      //if (context.mounted) Navigator.pop(context);
+        print(error.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +70,23 @@ class HomeView extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
 
+              const SizedBox(height: 25),
+
+              BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileData) {
+                    return Text(
+                      "Bienvenido/a: ${state.profile.username} \n"
+                      "Id: ${state.profile.id} \n"
+                      "Email: ${state.profile.email} \n"
+                      ,
+                      style: const TextStyle(fontSize: 18, fontFamily: 'Roboto'),
+                    );
+                  }
+                  return const CircularProgressIndicator();
+                }
+              ),
+
               const SizedBox(height: 50),
 
               //sign in button
@@ -44,7 +97,7 @@ class HomeView extends StatelessWidget {
                 }
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 10),
 
               //sign in button
               MyButton(

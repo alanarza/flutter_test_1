@@ -70,6 +70,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   void _onLogout(LogoutUser event, Emitter<UserState> emit) {
+    userRepository.deleteToken();
     emit(UserUnauthenticated());
   }
 }
