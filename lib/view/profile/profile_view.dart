@@ -5,18 +5,19 @@ import 'package:go_router/go_router.dart';
 import 'package:test_2/bloc/profile/profile_bloc.dart';
 import 'package:test_2/bloc/user/user_bloc.dart';
 import 'package:test_2/view/components/my_button.dart';
+import 'package:test_2/view/components/rec_dialog.dart';
 
-class HomeView extends StatefulWidget {
+class ProfileView extends StatefulWidget {
 
-  const HomeView({
+  const ProfileView({
     super.key
   });
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ProfileViewState extends State<ProfileView> {
   
   @override
   void initState() {
@@ -65,11 +66,18 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
       ),
-      floatingActionButton: const ClipOval(
-        child:  Material(
+      floatingActionButton: ClipOval(
+        child: Material(
           color: Color(0xFF7861FF),
           elevation: 10,
           child: InkWell(
+            onTap: (){
+              const RecDialog(
+                title: 'Grabar',
+                description: 'grabacion',
+                buttonText: 'cerrar'
+              );
+            },
             child: SizedBox(
               width: 56,
               height: 56,
@@ -100,7 +108,7 @@ class _HomeViewState extends State<HomeView> {
           
               //app name
               const Text(
-                "HOME",
+                "PROFILE",
                 style: TextStyle(fontSize: 20),
               ),
 
@@ -157,7 +165,7 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Icon(
             icon,
-            color: url == 'home' ? Color(0xFF7861FF) : Colors.black87,
+            color: url == 'profile' ? Color(0xFF7861FF) : Colors.black87,
           )
         ],
       ),

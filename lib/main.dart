@@ -9,6 +9,9 @@ import 'package:test_2/view/auth/login_view.dart';
 import 'package:test_2/view/auth/register_view.dart';
 import 'package:test_2/view/home/home_view.dart';
 import 'package:test_2/repositories/user_repository.dart';
+import 'package:test_2/view/notifications/notifications_view.dart';
+import 'package:test_2/view/profile/profile_view.dart';
+import 'package:test_2/view/search/search_view.dart';
 
 void main() {
   final authStateNotifier = ValueNotifier<bool>(false);
@@ -45,7 +48,27 @@ class MainApp extends StatelessWidget {
       routes: <GoRoute>[
         GoRoute(
           path: '/home',
-          builder: (BuildContext context, GoRouterState state) => const HomeView(),
+          pageBuilder: (BuildContext context, GoRouterState state) => const NoTransitionPage(
+            child: HomeView(),
+          ),
+        ),
+        GoRoute(
+          path: '/search',
+          pageBuilder: (BuildContext context, GoRouterState state) => const NoTransitionPage(
+            child: SearchView(),
+          ),
+        ),
+        GoRoute(
+          path: '/notifications',
+          pageBuilder: (BuildContext context, GoRouterState state) => const NoTransitionPage(
+            child: NotificationsView(),
+          ),
+        ),
+        GoRoute(
+          path: '/profile',
+          pageBuilder: (BuildContext context, GoRouterState state) => const NoTransitionPage(
+            child: ProfileView(),
+          ),
         ),
         GoRoute(
           path: '/login',
@@ -93,8 +116,8 @@ class MainApp extends StatelessWidget {
     }
 
     if (context.read<UserBloc>().state is UserAuthenticated && logginIn) {
-      print("redirecciono al home");
-      return '/home';
+      print("redirecciono al profile");
+      return '/profile';
     }
 
     print("devuelvo null");

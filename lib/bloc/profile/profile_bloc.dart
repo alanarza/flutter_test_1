@@ -25,7 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         result.fold(
           (error) => print('Error: $error'),
           (profileData) {
-            print("bloc profile asdasdadads");
+            print("bloc profile");
             print(profileData.id);
             emit(ProfileData(
               profile: Profile(

@@ -6,17 +6,17 @@ import 'package:test_2/bloc/profile/profile_bloc.dart';
 import 'package:test_2/bloc/user/user_bloc.dart';
 import 'package:test_2/view/components/my_button.dart';
 
-class HomeView extends StatefulWidget {
+class SearchView extends StatefulWidget {
 
-  const HomeView({
+  const SearchView({
     super.key
   });
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _SearchViewState extends State<SearchView> {
   
   @override
   void initState() {
@@ -100,7 +100,7 @@ class _HomeViewState extends State<HomeView> {
           
               //app name
               const Text(
-                "HOME",
+                "Search",
                 style: TextStyle(fontSize: 20),
               ),
 
@@ -157,7 +157,7 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Icon(
             icon,
-            color: url == 'home' ? Color(0xFF7861FF) : Colors.black87,
+            color: url == 'search' ? Color(0xFF7861FF) : Colors.black87,
           )
         ],
       ),
