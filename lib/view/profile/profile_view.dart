@@ -71,14 +71,8 @@ class _ProfileViewState extends State<ProfileView> {
           color: Color(0xFF7861FF),
           elevation: 10,
           child: InkWell(
-            onTap: (){
-              const RecDialog(
-                title: 'Grabar',
-                description: 'grabacion',
-                buttonText: 'cerrar'
-              );
-            },
-            child: SizedBox(
+            onTap: () {RecDialog("asd",context);},
+            child: const SizedBox(
               width: 56,
               height: 56,
               child: Icon(
