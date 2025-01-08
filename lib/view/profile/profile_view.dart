@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:test_2/bloc/profile/profile_bloc.dart';
 import 'package:test_2/bloc/user/user_bloc.dart';
 import 'package:test_2/view/components/my_button.dart';
@@ -21,10 +22,37 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   
+  final player = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  String formatTime(int seconds) {
+    return '${(Duration(seconds: seconds))}'.split('.')[0].padLeft(8, '0');
+  }
+  
   @override
   void initState() {
     super.initState();
     _loadUserProfile();
+
+    player.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+
+    player.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    player.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
   }
 
   Future<void> _loadUserProfile() async {
@@ -144,8 +172,8 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
                       child: Text(
                         "Alan Arza",
                         style: TextStyle(
@@ -164,7 +192,7 @@ class _ProfileViewState extends State<ProfileView> {
                               "34",
                               style: Theme.of(context).textTheme.titleMedium
                             ),
-                            Text(
+                            const Text(
                               "Sonidos",
                               style: TextStyle(
                                 fontSize: 15,
@@ -180,7 +208,7 @@ class _ProfileViewState extends State<ProfileView> {
                               "340",
                               style: Theme.of(context).textTheme.titleMedium
                             ),
-                            Text(
+                            const Text(
                               "Seguidores",
                               style: TextStyle(
                                 fontSize: 15,
@@ -196,7 +224,7 @@ class _ProfileViewState extends State<ProfileView> {
                               "410",
                               style: Theme.of(context).textTheme.titleMedium
                             ),
-                            Text(
+                            const Text(
                               "Seguidos",
                               style: TextStyle(
                                 fontSize: 15,
@@ -238,8 +266,8 @@ class _ProfileViewState extends State<ProfileView> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Center(child: Text("Contenido de Sonidos")),
-                  Center(child: Text("Contenido de Compartido"))
+                  tab1Content(),
+                  tab2Content()
                 ],
               ),
             ),
@@ -247,6 +275,138 @@ class _ProfileViewState extends State<ProfileView> {
           ],
         ),
       )
+    );
+  }
+
+  Widget tab1Content() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+
+          cardAudioPlayer(),
+
+          cardAudioPlayer(),
+
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(12)
+            ),
+            padding: const EdgeInsets.all(26),
+            margin: const EdgeInsets.only(bottom: 10),
+            child: const Center(
+              child: Text(
+                "Contenido de Sonidos",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16
+                ),
+              ),
+            ),
+          ),
+
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(12)
+            ),
+            padding: const EdgeInsets.all(26),
+            margin: const EdgeInsets.only(bottom: 10),
+            child: const Center(
+              child: Text(
+                "Contenido de Sonidos",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16
+                ),
+              ),
+            ),
+          ),
+
+        ]
+      )
+    );
+  }
+
+  Widget tab2Content() {
+    return const Center(
+      child: Text("Contenido de Compartido"),
+    );
+  }
+
+  Widget cardAudioPlayer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(12)
+      ),
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Center(
+        child: Column(
+          children: [
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Test.mp3"),
+                const SizedBox(width: 20),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color(0xFF7861FF),
+                  child: IconButton(
+                    icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+                    onPressed: () {
+                      if (isPlaying) {
+                        player.pause();
+                      } else {
+                        player.play(AssetSource("audios/tu_desprecio.mp3"));
+                      }
+                    }
+                  ),
+                ),
+                const SizedBox(width: 20),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color(0xFF7861FF),
+                  child: IconButton(
+                    icon: const Icon(Icons.stop),
+                    onPressed: () {
+                      player.stop();
+                    }
+                  ),
+                ),
+                
+                
+              ],
+            ),
+
+            Slider(
+              min: 0, 
+              max: duration.inSeconds.toDouble(),
+              value: position.inSeconds.toDouble(),
+              onChanged: (value) {
+                final position = Duration(seconds: value.toInt());
+                player.seek(position);
+                player.resume();
+              }
+            ),
+
+            Container(
+              padding: const EdgeInsets.all(2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(formatTime(position.inSeconds)),
+                  Text(formatTime((duration - position).inSeconds)),
+                ],
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
 
