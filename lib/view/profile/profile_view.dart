@@ -289,42 +289,9 @@ class _ProfileViewState extends State<ProfileView> {
 
           cardAudioPlayer(),
 
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(12)
-            ),
-            padding: const EdgeInsets.all(26),
-            margin: const EdgeInsets.only(bottom: 10),
-            child: const Center(
-              child: Text(
-                "Contenido de Sonidos",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
-                ),
-              ),
-            ),
-          ),
+          cardAudioPlayer(),
 
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(12)
-            ),
-            padding: const EdgeInsets.all(26),
-            margin: const EdgeInsets.only(bottom: 10),
-            child: const Center(
-              child: Text(
-                "Contenido de Sonidos",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
-                ),
-              ),
-            ),
-          ),
-
+          cardAudioPlayer(),
         ]
       )
     );
@@ -349,10 +316,23 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text("Test.mp3"),
-                const SizedBox(width: 20),
+                const Text(
+                  "Test.mp3",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18
+                  ),
+                ),
+                const SizedBox(width: 20) 
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: const Color(0xFF7861FF),
@@ -367,31 +347,21 @@ class _ProfileViewState extends State<ProfileView> {
                     }
                   ),
                 ),
-                const SizedBox(width: 20),
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: const Color(0xFF7861FF),
-                  child: IconButton(
-                    icon: const Icon(Icons.stop),
-                    onPressed: () {
-                      player.stop();
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Slider(
+                    min: 0, 
+                    max: duration.inSeconds.toDouble(),
+                    value: position.inSeconds.toDouble(),
+                    onChanged: (value) {
+                      final position = Duration(seconds: value.toInt());
+                      player.seek(position);
+                      player.resume();
                     }
                   ),
-                ),
-                
-                
-              ],
-            ),
+                )
 
-            Slider(
-              min: 0, 
-              max: duration.inSeconds.toDouble(),
-              value: position.inSeconds.toDouble(),
-              onChanged: (value) {
-                final position = Duration(seconds: value.toInt());
-                player.seek(position);
-                player.resume();
-              }
+              ],
             ),
 
             Container(
@@ -399,8 +369,20 @@ class _ProfileViewState extends State<ProfileView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(formatTime(position.inSeconds)),
-                  Text(formatTime((duration - position).inSeconds)),
+                  Text(
+                    formatTime(position.inSeconds),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16
+                    ),
+                  ),
+                  Text(
+                    formatTime((duration - position).inSeconds),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16
+                    ),
+                  ),
                 ],
               ),
             )
